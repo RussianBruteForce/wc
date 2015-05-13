@@ -5,15 +5,6 @@
 
 using namespace std;
 
-struct Data {
-	Data(string &str) :
-	        str{str} {}
-	Data(string &&str) :
-	        str{move(str)} {}
-	string str;
-	size_t count{1};
-};
-
 void trim(string &str) {
 	//Ту нужно обрабатывать строку....
 	// городить огород с удалением всяких символов
@@ -22,8 +13,7 @@ void trim(string &str) {
 
 int main()
 {
-	hash<std::string> str_hash;
-	unordered_map<size_t, Data> map;
+	unordered_map<string, size_t> map;
 
 	ifstream file;
 	string buf_str;
@@ -31,13 +21,13 @@ int main()
 	while (!file.eof()) {
 		file >> buf_str;
 		trim(buf_str);
-		auto n = map.emplace(make_pair(str_hash(buf_str), Data{buf_str}));
+		auto n = map.emplace(make_pair(buf_str, 1));
 		if (!n.second)
-			n.first->second.count++;
+			n.first->second++;
 	}
 
-//	for (auto& x: map)
-//		cout << x.second.str << " - " << x.second.count << endl;
+	for (auto& x: map)
+		cout << x.first << " - " << x.second << endl;
 
 	return 0;
 }
